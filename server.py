@@ -44,6 +44,20 @@ def get_data():
     print("in post",user_details)
     return("success")
 
+@app.route('/signin', methods=['POST'])
+def signin():
+    data = request.json
+    email_val = data['email']
+    mobile_val = data['mobile']
+    password_val = data['password']
+    signin_details = {
+        'email':email_val,
+        'mobile': mobile_val,
+        'password':password_val
+    }
+    print(signin_details)
+    return("success")
+
 
 @app.route('/upload-image', methods = ['POST'])
 def upload_image():
@@ -62,6 +76,36 @@ def upload_image():
         user_prompt = "Give me the information about it"
         extracted_text = gemini_output(uploaded_file.filename,system_prompt,user_prompt)
         llm_response = get_llm_response(extracted_text,user_details)
+
+        # with open('myFile.txt','w') as file:
+        #     file.write(llm_response)
+        # with open('myFile.txt', 'r') as file:
+        #     lines = file.readlines()
+
+        # # Remove the first and last lines
+        # modified_lines = lines[1:-1]
+
+        # # Write the modified content back to the file
+        # with open('myFile.txt', 'w') as file:
+        #     file.writelines(modified_lines)
+
+
+        with open('myFile.json','w') as file:
+            file.write(llm_response)
+
+
+        with open('myFile.json', 'r') as file:
+            first_line = file.readline()
+        if first_line =='```json':
+            with open('myFile.json', 'r') as file:
+                lines = file.readlines()
+
+        # # # Remove the first and last lines
+                modified_lines = lines[1:-1]
+
+        # # # Write the modified content back to the file
+            with open('myFile.json', 'w') as file:
+                file.writelines(modified_lines)
         return "Image uploaded successfully."
     else:
         return "No Image received."
@@ -80,6 +124,24 @@ def camera_image():
         return "Image uploaded successfully."
     else:
         return "No Image received."
+    
+
+@app.route('/output', methods=['GET'])
+def output():
+    # data1 = {
+    #     'Ingredients' : "Girish",
+    #     'age' :"20"
+    # }
+    # with open('myFile.txt', 'r') as text_file:
+    #     json_content = text_file.read()
+    # data = json.loads(json_content)# Parse the JSON content into a Python dictionary
+
+    # with open('myFile.json','w') as json_file:
+    #     json.dump(data, json_file, indent=4)
+    with open('myFile.json', 'r') as json_file2:
+        final_data = json.load(json_file2)
+    return final_data
+
 
 print(user_details)
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 from pathlib import Path
 import textwrap
+import json
 import google.generativeai as genai
 from IPython.display import display
 from IPython.display import Markdown
@@ -86,9 +87,9 @@ def get_llm_response(packet_description,user_details):
 
 
     prompt = f'''
-    Please extract the following information from the given text and return it is as a JSON object and each heading is a variable  :
+    Please extract the following information from the given text and return it is as a JSON object and each heading is a variable(only in lower cases and white spaces are replaced with underscores)  :,and i want these json variables "ingredients", "nutritional_value", "personalized_report" and "how_does_this_product_affect_the_goal_of_the_user"(regarding the goal of the user like weightgain or weight loss or muscle gain like hoe does this product affect the goal of the user i have specified the goal of the user in goal key in the user details) and the whole value string for the key variable should be within a single line.  in json format, and value of the key should be in the format like speaking to the user itself providing the knowledge based on key variable. regarding the heading variable(key)
     note all the ingredients,explain only the complex ingredients in a very very  simple terms .Give side effects of the semi-complex and complex ingredients
-    give me all the nutritional value and names 
+    give me all the nutritional value and names . And also i want it to be with the perfect json format without comments 
 
 
     this is the body of text to extract the information from:
@@ -104,6 +105,15 @@ def get_llm_response(packet_description,user_details):
     response = model.generate_content(prompt)
 
     to_markdown(response.text)
-
-    print(response.text)
-
+    # print(response.text)
+    return response.text
+    # data = json.loads(response.text)
+    # print(data)
+    # # data = {
+    # #   'name':'user',
+    # #   'age':'19'
+    # # }
+    # temp = json.dumps(data)
+    # with open('myFile.json','w') as file:
+    #   file.write(temp)
+    
