@@ -3,7 +3,7 @@ from flask import Flask, json
 import requests
 def sign_in_page():
     st.set_page_config(page_title="sign-in", page_icon="🌱")
-    st.title("Sign-in page2")
+    st.title("Sign-in page")
 
     st.markdown("""<style>
     [data-testid="collapsedControl"] {
