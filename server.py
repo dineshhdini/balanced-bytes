@@ -5,6 +5,8 @@ from LLM import gemini_output, get_llm_response
 
 app = Flask(__name__)
 
+
+
 user_details = {}
 print("out",user_details)
 @app.route('/post_data', methods=['POST'])
@@ -82,30 +84,11 @@ def upload_image():
         # with open('myFile.txt', 'r') as file:
         #     lines = file.readlines()
 
-        # # Remove the first and last lines
-        # modified_lines = lines[1:-1]
 
-        # # Write the modified content back to the file
-        # with open('myFile.txt', 'w') as file:
-        #     file.writelines(modified_lines)
+        global llm 
+        llm= llm_response.split("```json")[1].strip()
+        llm = llm.strip("`")
 
-
-        with open('myFile.json','w') as file:
-            file.write(llm_response)
-
-
-        with open('myFile.json', 'r') as file:
-            first_line = file.readline()
-        if first_line =='```json':
-            with open('myFile.json', 'r') as file:
-                lines = file.readlines()
-
-        # # # Remove the first and last lines
-                modified_lines = lines[1:-1]
-
-        # # # Write the modified content back to the file
-            with open('myFile.json', 'w') as file:
-                file.writelines(modified_lines)
         return "Image uploaded successfully."
     else:
         return "No Image received."
@@ -128,19 +111,7 @@ def camera_image():
 
 @app.route('/output', methods=['GET'])
 def output():
-    # data1 = {
-    #     'Ingredients' : "Girish",
-    #     'age' :"20"
-    # }
-    # with open('myFile.txt', 'r') as text_file:
-    #     json_content = text_file.read()
-    # data = json.loads(json_content)# Parse the JSON content into a Python dictionary
-
-    # with open('myFile.json','w') as json_file:
-    #     json.dump(data, json_file, indent=4)
-    with open('myFile.json', 'r') as json_file2:
-        final_data = json.load(json_file2)
-    return final_data
+    return llm
 
 
 print(user_details)
